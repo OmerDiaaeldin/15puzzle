@@ -17,7 +17,7 @@ import random
 
 # Module Classes
 
-class EightPuzzleState:
+class FifteenPuzzleState:
     """
     The Eight Puzzle is described in the course textbook on
     page 64.
@@ -29,22 +29,11 @@ class EightPuzzleState:
 
     def __init__( self, numbers ):
         """
-          Constructs a new eight puzzle from an ordering of numbers.
+          Constructs a new fifteen puzzle from an ordering of numbers.
 
-        numbers: a list of integers from 0 to 8 representing an
-          instance of the eight puzzle.  0 represents the blank
+        numbers: a list of integers from 0 to 15 representing an
+          instance of the eight puzzle.  15 represents the blank
           space.  Thus, the list
-
-            [1, 0, 2, 3, 4, 5, 6, 7, 8]
-
-          represents the eight puzzle:
-            -------------
-            | 1 |   | 2 |
-            -------------
-            | 3 | 4 | 5 |
-            -------------
-            | 6 | 7 | 8 |
-            ------------
 
         The configuration of the puzzle is stored in a 2-dimensional
         list (a list of lists) 'cells'.
@@ -52,11 +41,11 @@ class EightPuzzleState:
         self.cells = []
         numbers = numbers[:] # Make a copy so as not to cause side-effects.
         numbers.reverse()
-        for row in range( 3 ):
+        for row in range( 4 ):
             self.cells.append( [] )
-            for col in range( 3 ):
+            for col in range( 4 ):
                 self.cells[row].append( numbers.pop() )
-                if self.cells[row][col] == 0:
+                if self.cells[row][col] == 15:
                     self.blankLocation = row, col
 
     def isGoal( self ):
@@ -78,8 +67,8 @@ class EightPuzzleState:
         False
         """
         current = 0
-        for row in range( 3 ):
-            for col in range( 3 ):
+        for row in range( 4 ):
+            for col in range( 4 ):
                 if current != self.cells[row][col]:
                     return False
                 current += 1
@@ -99,11 +88,11 @@ class EightPuzzleState:
         row, col = self.blankLocation
         if(row != 0):
             moves.append('up')
-        if(row != 2):
+        if(row != 3):
             moves.append('down')
         if(col != 0):
             moves.append('left')
-        if(col != 2):
+        if(col != 3):
             moves.append('right')
         return moves
 
@@ -136,7 +125,7 @@ class EightPuzzleState:
             raise "Illegal Move"
 
         # Create a copy of the current eightPuzzle
-        newPuzzle = EightPuzzleState([0, 0, 0, 0, 0, 0, 0, 0, 0])
+        newPuzzle = FifteenPuzzleState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
         newPuzzle.cells = [values[:] for values in self.cells]
         # And update it to reflect the move
         newPuzzle.cells[row][col] = self.cells[newrow][newcol]
@@ -155,7 +144,7 @@ class EightPuzzleState:
               EightPuzzleState([1, 0, 2, 3, 4, 5, 6, 7, 8]).result('left')
           True
         """
-        for row in range( 3 ):
+        for row in range( 4 ):
             if self.cells[row] != other.cells[row]:
                 return False
         return True
@@ -173,7 +162,8 @@ class EightPuzzleState:
         for row in self.cells:
             rowLine = '|'
             for col in row:
-                if col == 0:
+                col = col+1
+                if col == 16:
                     col = ' '
                 rowLine = rowLine + ' ' + col.__str__() + ' |'
             lines.append(rowLine)
@@ -185,9 +175,9 @@ class EightPuzzleState:
 
 # TODO: Implement The methods in this class
 
-class EightPuzzleSearchProblem(search.SearchProblem):
+class FifteenPuzzleSearchProblem(search.SearchProblem):
     """
-      Implementation of a SearchProblem for the  Eight Puzzle domain
+      Implementation of a SearchProblem for the  Fifteen Puzzle domain
 
       Each state is represented by an instance of an eightPuzzle.
     """
@@ -221,14 +211,14 @@ class EightPuzzleSearchProblem(search.SearchProblem):
         """
         return len(actions)
 
-EIGHT_PUZZLE_DATA = [[1, 0, 2, 3, 4, 5, 6, 7, 8],
+FIFTEEN_PUZZLE_DATA = [[1, 0, 2, 3, 4, 5, 6, 7, 8],
                      [1, 7, 8, 2, 3, 4, 5, 6, 0],
                      [4, 3, 2, 7, 0, 5, 1, 6, 8],
                      [5, 1, 3, 4, 0, 2, 6, 7, 8],
                      [1, 2, 5, 7, 6, 8, 0, 4, 3],
                      [0, 3, 1, 6, 8, 2, 7, 5, 4]]
 
-def loadEightPuzzle(puzzleNumber):
+def loadFifteenPuzzle(puzzleNumber):
     """
       puzzleNumber: The number of the eight puzzle to load.
 
@@ -248,7 +238,7 @@ def loadEightPuzzle(puzzleNumber):
     """
     return EightPuzzleState(EIGHT_PUZZLE_DATA[puzzleNumber])
 
-def createRandomEightPuzzle(moves=100):
+def createRandomFifteenPuzzle(moves=100):
     """
       moves: number of random moves to apply
 
@@ -256,18 +246,18 @@ def createRandomEightPuzzle(moves=100):
       a series of 'moves' random moves to a solved
       puzzle.
     """
-    puzzle = EightPuzzleState([0,1,2,3,4,5,6,7,8])
+    puzzle = FifteenPuzzleState([0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15])
     for i in range(moves):
         # Execute a random legal move
         puzzle = puzzle.result(random.sample(puzzle.legalMoves(), 1)[0])
     return puzzle
 
 if __name__ == '__main__':
-    puzzle = createRandomEightPuzzle(25)
+    puzzle = createRandomFifteenPuzzle(25)
     print('A random puzzle:')
     print(puzzle)
 
-    problem = EightPuzzleSearchProblem(puzzle)
+    problem = FifteenPuzzleSearchProblem(puzzle)
     path= search.aStarSearch(problem)    
     """
     path = search.breadthFirstSearch(problem)
