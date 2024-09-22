@@ -186,7 +186,47 @@ def nullHeuristic(state, problem=None):
     goal in the provided SearchProblem.  This heuristic is trivial.
     """
     return 0
+def h1(state, problem=None):
+    """
+    This heuristic function takes a state and estimates the cost to the nearest
+    goal as equal to the number of misplaced tiles
+    """
+    current = 0
+    misplaced_tile_count = 0
+    for row in state.cells:
+        for col in row:
+            if(col != current):
+                misplaced_tile_count += 1
+            current += 1
+    return misplaced_tile_count
 
+def h2(state, problem=None):
+    total_distance = 0
+    for (row_count,row) in enumerate(state.cells):
+        for (col_count,col) in enumerate(row):
+            # get the final position of this value
+            eventual_row, eventual_col = util.getFinalPosition(col)
+            total_distance += util.euclideanDistance((eventual_row, eventual_col),(row_count,col_count))
+    return total_distance
+def h3(state, problem=None):
+    total_distance = 0
+    for (row_count, row) in enumerate(state.cells):
+        for (col_count, col) in enumerate(row):
+            # get the final position of this value
+            eventual_row, eventual_col = util.getFinalPosition(col)
+            total_distance += util.manhattanDistance((eventual_row, eventual_col), (row_count, col_count))
+    return total_distance
+def h4(state, problem=None):
+    total_estimated_cost = 0
+    for (row_count, row) in enumerate(state.cells):
+        for (col_count, col) in enumerate(row):
+            # get the final position of this value
+            eventual_row, eventual_col = util.getFinalPosition(col)
+            if(eventual_row != row_count):
+                total_estimated_cost += 1
+            if(eventual_col != col_count):
+                total_estimated_cost += 1
+    return total_estimated_cost
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
 

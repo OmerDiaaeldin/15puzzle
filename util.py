@@ -10,8 +10,7 @@
 # (denero@cs.berkeley.edu) and Dan Klein (klein@cs.berkeley.edu).
 # Student side autograding was added by Brad Miller, Nick Hay, and
 # Pieter Abbeel (pabbeel@cs.berkeley.edu).
-
-
+import math
 # util.py
 # -------
 # Licensing Information:  You are free to use or extend these projects for
@@ -227,6 +226,19 @@ def manhattanDistance( xy1, xy2 ):
     "Returns the Manhattan distance between points xy1 and xy2"
     return abs( xy1[0] - xy2[0] ) + abs( xy1[1] - xy2[1] )
 
+def euclideanDistance(xy1, xy2):
+    distance_squared = ((xy1[0] - xy2[0])**2 + (xy1[1] - xy2[1])**2)
+    distance = math.sqrt(distance_squared)
+    return distance
+
+def getFinalPosition(val, size=4):
+    """
+    This is a function that takes in a number and return a tuple representing the
+    coordinates of that value in a game of the given size
+    """
+    row = val // size
+    col = (val%size)
+    return (row,col)
 """
   Data structures and functions useful for various course projects
 

@@ -59,12 +59,6 @@ class FifteenPuzzleState:
             -------------
             | 6 | 7 | 8 |
             -------------
-
-        >>> EightPuzzleState([0, 1, 2, 3, 4, 5, 6, 7, 8]).isGoal()
-        True
-
-        >>> EightPuzzleState([1, 0, 2, 3, 4, 5, 6, 7, 8]).isGoal()
-        False
         """
         current = 0
         for row in range( 4 ):
@@ -81,8 +75,6 @@ class FifteenPuzzleState:
         Moves consist of moving the blank space up, down, left or right.
         These are encoded as 'up', 'down', 'left' and 'right' respectively.
 
-        >>> EightPuzzleState([0, 1, 2, 3, 4, 5, 6, 7, 8]).legalMoves()
-        ['down', 'right']
         """
         moves = []
         row, col = self.blankLocation
@@ -258,7 +250,8 @@ if __name__ == '__main__':
     print(puzzle)
 
     problem = FifteenPuzzleSearchProblem(puzzle)
-    path= search.aStarSearch(problem)    
+    heuristic = search.h4
+    path= search.aStarSearch(problem, heuristic)
     """
     path = search.breadthFirstSearch(problem)
     """   
