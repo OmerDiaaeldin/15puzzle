@@ -225,6 +225,7 @@ class PriorityQueueWithFunction(PriorityQueue):
 def manhattanDistance( xy1, xy2 ):
     "Returns the Manhattan distance between points xy1 and xy2"
     return abs( xy1[0] - xy2[0] ) + abs( xy1[1] - xy2[1] )
+#/*=====Start Change Task 2=====*/
 
 def euclideanDistance(xy1, xy2):
     distance_squared = ((xy1[0] - xy2[0])**2 + (xy1[1] - xy2[1])**2)
@@ -239,6 +240,8 @@ def getFinalPosition(val, size=4):
     row = val // size
     col = (val%size)
     return (row,col)
+#/*=====End Change Task 2=====*/
+
 """
   Data structures and functions useful for various course projects
 

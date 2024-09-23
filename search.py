@@ -186,6 +186,8 @@ def nullHeuristic(state, problem=None):
     goal in the provided SearchProblem.  This heuristic is trivial.
     """
     return 0
+#/*=====Start Change Task 2=====*/
+
 def h1(state, problem=None):
     """
     This heuristic function takes a state and estimates the cost to the nearest
@@ -227,6 +229,9 @@ def h4(state, problem=None):
             if(eventual_col != col_count):
                 total_estimated_cost += 1
     return total_estimated_cost
+
+
+#/*=====End Change Task 2=====*/
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
 
