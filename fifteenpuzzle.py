@@ -17,16 +17,18 @@ import random
 
 # Module Classes
 
+#/*=====Start Change Task 1=====*/
 class FifteenPuzzleState:
     """
-    The Eight Puzzle is described in the course textbook on
+    The Fifteen Puzzle is described in the course textbook on
     page 64.
 
     This class defines the mechanics of the puzzle itself.  The
     task of recasting this puzzle as a search problem is left to
-    the EightPuzzleSearchProblem class.
+    the FifteenPuzzleSearchProblem class.
     """
 
+    # *=====End Change Task 1 =====*/
     def __init__( self, numbers ):
         """
           Constructs a new fifteen puzzle from an ordering of numbers.
@@ -41,28 +43,21 @@ class FifteenPuzzleState:
         self.cells = []
         numbers = numbers[:] # Make a copy so as not to cause side-effects.
         numbers.reverse()
+        # /*=====Start Change Task 1=====*/
         for row in range( 4 ):
             self.cells.append( [] )
             for col in range( 4 ):
                 self.cells[row].append( numbers.pop() )
                 if self.cells[row][col] == 15:
+                    # /*=====End Change Task 1=====*/
                     self.blankLocation = row, col
 
     def isGoal( self ):
-        """
-          Checks to see if the puzzle is in its goal state.
-
-            -------------
-            |   | 1 | 2 |
-            -------------
-            | 3 | 4 | 5 |
-            -------------
-            | 6 | 7 | 8 |
-            -------------
-        """
         current = 0
+        # /*=====Start Change Task 1=====*/
         for row in range( 4 ):
             for col in range( 4 ):
+                # /*=====End Change Task 1=====*/
                 if current != self.cells[row][col]:
                     return False
                 current += 1
@@ -80,17 +75,21 @@ class FifteenPuzzleState:
         row, col = self.blankLocation
         if(row != 0):
             moves.append('up')
+        # /*=====Start Change Task 1=====*/
         if(row != 3):
+            # /*=====End Change Task 1=====*/
             moves.append('down')
         if(col != 0):
             moves.append('left')
+        # /*=====Start Change Task 1=====*/
         if(col != 3):
+            # /*=====End Change Task 1=====*/
             moves.append('right')
         return moves
 
     def result(self, move):
         """
-          Returns a new eightPuzzle with the current state and blankLocation
+          Returns a new FifteenPuzzle with the current state and blankLocation
         updated based on the provided move.
 
         The move should be a string drawn from a list returned by legalMoves.
@@ -117,7 +116,9 @@ class FifteenPuzzleState:
             raise "Illegal Move"
 
         # Create a copy of the current eightPuzzle
+        # /*=====Start Change Task 1=====*/
         newPuzzle = FifteenPuzzleState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+        # /*=====End Change Task 1=====*/
         newPuzzle.cells = [values[:] for values in self.cells]
         # And update it to reflect the move
         newPuzzle.cells[row][col] = self.cells[newrow][newcol]
@@ -129,14 +130,13 @@ class FifteenPuzzleState:
     # Utilities for comparison and display
     def __eq__(self, other):
         """
-            Overloads '==' such that two eightPuzzles with the same configuration
+            Overloads '==' such that two FifteenPuzzles with the same configuration
           are equal.
 
-          >>> EightPuzzleState([0, 1, 2, 3, 4, 5, 6, 7, 8]) == \
-              EightPuzzleState([1, 0, 2, 3, 4, 5, 6, 7, 8]).result('left')
-          True
         """
+        # /*=====Start Change Task 1=====*/
         for row in range( 4 ):
+            # /*=====End Change Task 1=====*/
             if self.cells[row] != other.cells[row]:
                 return False
         return True
@@ -154,8 +154,10 @@ class FifteenPuzzleState:
         for row in self.cells:
             rowLine = '|'
             for col in row:
+                # /*=====Start Change Task 1=====*/
                 col = col+1
                 if col == 16:
+                    # /*=====End Change Task 1=====*/
                     col = ' '
                 rowLine = rowLine + ' ' + col.__str__() + ' |'
             lines.append(rowLine)
@@ -166,8 +168,9 @@ class FifteenPuzzleState:
         return self.__getAsciiString()
 
 # TODO: Implement The methods in this class
-
+#/*=====Start Change Task 1=====*/
 class FifteenPuzzleSearchProblem(search.SearchProblem):
+    # /*=====End Change Task 1=====*/
     """
       Implementation of a SearchProblem for the  Fifteen Puzzle domain
 
@@ -203,33 +206,18 @@ class FifteenPuzzleSearchProblem(search.SearchProblem):
         """
         return len(actions)
 
-FIFTEEN_PUZZLE_DATA = [[1, 0, 2, 3, 4, 5, 6, 7, 8],
-                     [1, 7, 8, 2, 3, 4, 5, 6, 0],
-                     [4, 3, 2, 7, 0, 5, 1, 6, 8],
-                     [5, 1, 3, 4, 0, 2, 6, 7, 8],
-                     [1, 2, 5, 7, 6, 8, 0, 4, 3],
-                     [0, 3, 1, 6, 8, 2, 7, 5, 4]]
-
-def loadFifteenPuzzle(puzzleNumber):
-    """
-      puzzleNumber: The number of the eight puzzle to load.
-
-      Returns an eight puzzle object generated from one of the
-      provided puzzles in EIGHT_PUZZLE_DATA.
-
-      puzzleNumber can range from 0 to 5.
-
-      >>> print loadEightPuzzle(0)
-      -------------
-      | 1 |   | 2 |
-      -------------
-      | 3 | 4 | 5 |
-      -------------
-      | 6 | 7 | 8 |
-      -------------
-    """
-    return EightPuzzleState(EIGHT_PUZZLE_DATA[puzzleNumber])
-
+# def loadFifteenPuzzle(puzzleNumber):
+#     """
+#       puzzleNumber: The number of the Fifteen puzzle to load.
+#
+#       Returns an Fifteen puzzle object generated from one of the
+#       provided puzzles in Fifteen_PUZZLE_DATA.
+#
+#       puzzleNumber can range from 0 to 5.
+#
+#     """
+#     return EightPuzzleState(EIGHT_PUZZLE_DATA[puzzleNumber])
+#
 def createRandomFifteenPuzzle(moves=100):
     """
       moves: number of random moves to apply
