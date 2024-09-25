@@ -70,7 +70,7 @@ def tinyMazeSearch(problem):
     w = Directions.WEST
     return  [s, s, w, s, w, w, s, w]
 
-def depthFirstSearch(problem):
+def depthFirstSearch(problem,max_depth=10):
     """Search the deepest nodes in the search tree first."""
 
     #states to be explored (LIFO). holds nodes in form (state, action)
@@ -79,20 +79,31 @@ def depthFirstSearch(problem):
     exploredNodes = []
     #define start node
     startState = problem.getStartState()
-    startNode = (startState, [])
+
+    # /*=====Start Change Task 4=====*/
+    startNode = (startState, [], 0) #(state, action, depth)
+    maxFringeSize = 1 # currently only the start state
+    maxDepth = 0 # the current depth is 0
+    numberOfNodesExpanded = 1 # only the root node
+    # /*=====End Change Task 4=====*/
     
     frontier.push(startNode)
     
     while not frontier.isEmpty():
         #begin exploring last (most-recently-pushed) node on frontier
-        currentState, actions = frontier.pop()
+        # /*=====Start Change Task 4=====*/
+        currentState, actions, currentDepth = frontier.pop()
+
+        # /*=====End Change Task 4=====*/
         
         if currentState not in exploredNodes:
             #mark current node as explored
             exploredNodes.append(currentState)
 
             if problem.isGoalState(currentState):
-                return actions
+                # /*=====Start Change Task 4=====*/
+                return (actions, maxFringeSize, maxDepth, numberOfNodesExpanded)
+                # /*=====End Change Task 4=====*/
             else:
                 #get list of possible successor nodes in 
                 #form (successor, action, stepCost)
@@ -101,12 +112,24 @@ def depthFirstSearch(problem):
                 #push each successor to frontier
                 for succState, succAction, succCost in successors:
                     newAction = actions + [succAction]
-                    newNode = (succState, newAction)
+                    # /*=====Start Change Task 4=====*/
+                    newDepth = currentDepth + 1
+                    newNode = (succState, newAction, newDepth)
+                    if(newDepth > max_depth):
+                        continue
+                    # /*=====End Change Task 4=====*/
                     frontier.push(newNode)
+                    # /*=====Start Change Task 4=====*/
+                    maxFringeSize = max(maxFringeSize, len(frontier))
+                    numberOfNodesExpanded += 1
+                    maxDepth = max(maxDepth, newDepth)
+                    # /*=====End Change Task 4=====*/
 
-    return actions  
+    # /*=====Start Change Task 4=====*/
+    return (actions, maxFringeSize, maxDepth, numberOfNodesExpanded)
+    # /*=====End Change Task 4=====*/
 
-def breadthFirstSearch(problem):
+def breadthFirstSearch(problem,max_depth=10):
     """Search the shallowest nodes in the search tree first."""
 
     #to be explored (FIFO)
@@ -116,34 +139,50 @@ def breadthFirstSearch(problem):
     exploredNodes = []
     
     startState = problem.getStartState()
-    startNode = (startState, [], 0) #(state, action, cost)
+    # /*=====Start Change Task 4=====*/
+    startNode = (startState, [], 0) #(state, action, depth)
+    maxFringeSize = 1 # currently only the start state
+    maxDepth = 0 # the current depth is 0
+    numberOfNodesExpanded = 1 # only the root node
+    # /*=====End Change Task 4=====*/
     
     frontier.push(startNode)
     
     while not frontier.isEmpty():
         #begin exploring first (earliest-pushed) node on frontier
-        currentState, actions, currentCost = frontier.pop()
+        currentState, actions, currentDepth = frontier.pop()
         
         if currentState not in exploredNodes:
             #put popped node state into explored list
             exploredNodes.append(currentState)
 
             if problem.isGoalState(currentState):
-                return actions
+                return (actions, maxFringeSize, maxDepth, numberOfNodesExpanded)
             else:
                 #list of (successor, action, stepCost)
                 successors = problem.getSuccessors(currentState)
                 
                 for succState, succAction, succCost in successors:
                     newAction = actions + [succAction]
-                    newCost = currentCost + succCost
-                    newNode = (succState, newAction, newCost)
+                    # /*=====Start Change Task 4=====*/
+                    newDepth = currentDepth + 1
+                    newNode = (succState, newAction, newDepth)
+                    if (newDepth > max_depth):
+                        continue
+                    # /*=====End Change Task 4=====*/
 
                     frontier.push(newNode)
+                    # /*=====Start Change Task 4=====*/
+                    maxFringeSize = max(maxFringeSize, len(frontier))
+                    numberOfNodesExpanded += 1
+                    maxDepth = max(maxDepth, newDepth)
+                    # /*=====End Change Task 4=====*/
 
-    return actions
-        
-def uniformCostSearch(problem):
+    # /*=====Start Change Task 4=====*/
+    return (actions, maxFringeSize, maxDepth, numberOfNodesExpanded)
+    # /*=====End Change Task 4=====*/
+
+def uniformCostSearch(problem, max_depth=10):
     """Search the node of least total cost first."""
 
     #to be explored (FIFO): holds (item, cost)
@@ -153,20 +192,25 @@ def uniformCostSearch(problem):
     exploredNodes = {}
     
     startState = problem.getStartState()
-    startNode = (startState, [], 0) #(state, action, cost)
+    # /*=====Start Change Task 4=====*/
+    startNode = (startState, [], 0, 0)  # (state, action, cost, depth)
+    maxFringeSize = 1  # currently only the start state
+    maxDepth = 0  # the current depth is 0
+    numberOfNodesExpanded = 1  # only the root node
+    # /*=====End Change Task 4=====*/
     
     frontier.push(startNode, 0)
     
     while not frontier.isEmpty():
         #begin exploring first (lowest-cost) node on frontier
-        currentState, actions, currentCost = frontier.pop()
+        currentState, actions, currentCost, currentDepth = frontier.pop()
        
         if (currentState not in exploredNodes) or (currentCost < exploredNodes[currentState]):
             #put popped node's state into explored list
             exploredNodes[currentState] = currentCost
 
             if problem.isGoalState(currentState):
-                return actions
+                return (actions, maxFringeSize, maxDepth, numberOfNodesExpanded)
             else:
                 #list of (successor, action, stepCost)
                 successors = problem.getSuccessors(currentState)
@@ -174,11 +218,24 @@ def uniformCostSearch(problem):
                 for succState, succAction, succCost in successors:
                     newAction = actions + [succAction]
                     newCost = currentCost + succCost
-                    newNode = (succState, newAction, newCost)
+                    # /*=====Start Change Task 4=====*/
+                    newDepth = currentDepth + 1
+                    newNode = (succState, newAction, newCost, newDepth)
+                    if (newDepth > max_depth):
+                        continue
+                    # /*=====End Change Task 4=====*/
 
                     frontier.update(newNode, newCost)
+                    # /*=====Start Change Task 4=====*/
+                    maxFringeSize = max(maxFringeSize, len(frontier))
+                    numberOfNodesExpanded += 1
+                    maxDepth = max(maxDepth, newDepth)
+                    # /*=====End Change Task 4=====*/
 
-    return actions
+    # /*=====Start Change Task 4=====*/
+    return (actions, maxFringeSize, maxDepth, numberOfNodesExpanded)
+    # /*=====End Change Task 4=====*/
+
 
 def nullHeuristic(state, problem=None):
     """
@@ -293,9 +350,11 @@ def aStarSearch(problem, heuristic=nullHeuristic):
                 if not already_explored:
                     frontier.push(newNode, newCost + heuristic(succState, problem))
                     exploredNodes.append((succState, newCost))
+                    # /*=====Start Change Task 3=====*/
                     maxFringeSize = max(maxFringeSize,len(frontier))
                     numberOfNodesExpanded += 1
                     maxDepth = max(maxDepth,newDepth)
+                    # /*=====End Change Task 3=====*/
         # /*=====Start Change Task 3=====*/
     return (actions,maxFringeSize,maxDepth,numberOfNodesExpanded)
     # /*=====End Change Task 3=====*/

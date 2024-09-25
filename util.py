@@ -147,6 +147,11 @@ class Stack:
         "Returns true if the stack is empty"
         return len(self.list) == 0
 
+    # /*=====Start Change Task 4=====*/
+    def __len__(self):
+        return len(self.list)
+    # /*=====Start Change Task 4=====*/
+
 class Queue:
     "A container with a first-in-first-out (FIFO) queuing policy."
     def __init__(self):
@@ -167,6 +172,10 @@ class Queue:
         "Returns true if the queue is empty"
         return len(self.list) == 0
 
+    # /*=====Start Change Task 4=====*/
+    def __len__(self):
+        return len(self.list)
+    # /*=====Start Change Task 4=====*/
 class PriorityQueue:
     """
       Implements a priority queue data structure. Each inserted item

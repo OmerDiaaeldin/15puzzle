@@ -1,0 +1,5 @@
+,algorithm,average maximum fringe size,average tree depth,average time,average nodes used
+0,depthFirstSearch,43.18,27.46,0.0011146653400000003,83.87
+1,breadthFirstSearch,6.53,2.0,6.866967000000002e-05,9.04
+2,uniformCostSearch,6.53,2.0,0.00010290242999999996,9.04
+3,astarWithWrapper,3.0,1.0,5.175117999999999e-05,4.0
