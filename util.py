@@ -205,6 +205,12 @@ class PriorityQueue:
         else:
             self.push(item, priority)
 
+    # /*=====Start Change Task 3=====*/
+    def __len__(self):
+        return len(self.heap)
+    # /*=====End Change Task 3=====*/
+
+
 class PriorityQueueWithFunction(PriorityQueue):
     """
     Implements a priority queue with the same push/pop signature of the

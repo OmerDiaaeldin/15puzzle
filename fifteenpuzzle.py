@@ -127,6 +127,34 @@ class FifteenPuzzleState:
 
         return newPuzzle
 
+    # /*=====Start Change Task 3=====*/
+    def isPossible(self):
+        """
+        This is a method that checks whether a certain puzzle is
+        possible or not based on a simple algorithm. The puzzle is solvable if
+        and only if the parity of the number of inversions (ignoring the blank space)
+        is different than the parity of the row of the blank cell (0 indexing)
+        """
+        inversions = 0
+        blank_space_row = 0
+        flattenedState = []
+        for i in range(4):
+            for j in range(4):
+                if(self.cells[i][j] == 15):
+                    blank_space_row = i
+                else:
+                    flattenedState.append(self.cells[i][j])
+
+        for i in range(15):
+            for j in range(i+1,15):
+                if(flattenedState[j] < flattenedState[i]):
+                    inversions += 1
+        if(inversions %2 != blank_space_row%2):
+            return True
+        else:
+            return False
+    # /*=====End Change Task 3=====*/
+
     # Utilities for comparison and display
     def __eq__(self, other):
         """
@@ -181,7 +209,7 @@ class FifteenPuzzleSearchProblem(search.SearchProblem):
         self.puzzle = puzzle
 
     def getStartState(self):
-        return puzzle
+        return self.puzzle
 
     def isGoalState(self,state):
         return state.isGoal()
@@ -222,7 +250,7 @@ def createRandomFifteenPuzzle(moves=100):
     """
       moves: number of random moves to apply
 
-      Creates a random eight puzzle by applying
+      Creates a random 15 puzzle by applying
       a series of 'moves' random moves to a solved
       puzzle.
     """

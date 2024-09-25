@@ -188,7 +188,7 @@ def nullHeuristic(state, problem=None):
     return 0
 #/*=====Start Change Task 2=====*/
 
-def h1(state, problem=None):
+def misplacedTilesHeuristic(state, problem=None):
     """
     This heuristic function takes a state and estimates the cost to the nearest
     goal as equal to the number of misplaced tiles
@@ -202,7 +202,7 @@ def h1(state, problem=None):
             current += 1
     return misplaced_tile_count
 
-def h2(state, problem=None):
+def euclideanHeuristic(state, problem=None):
     total_distance = 0
     for (row_count,row) in enumerate(state.cells):
         for (col_count,col) in enumerate(row):
@@ -210,7 +210,7 @@ def h2(state, problem=None):
             eventual_row, eventual_col = util.getFinalPosition(col)
             total_distance += util.euclideanDistance((eventual_row, eventual_col),(row_count,col_count))
     return total_distance
-def h3(state, problem=None):
+def manhattanHeuristic(state, problem=None):
     total_distance = 0
     for (row_count, row) in enumerate(state.cells):
         for (col_count, col) in enumerate(row):
@@ -218,7 +218,7 @@ def h3(state, problem=None):
             eventual_row, eventual_col = util.getFinalPosition(col)
             total_distance += util.manhattanDistance((eventual_row, eventual_col), (row_count, col_count))
     return total_distance
-def h4(state, problem=None):
+def tilesOutOfRowAndColHeuristic(state, problem=None):
     total_estimated_cost = 0
     for (row_count, row) in enumerate(state.cells):
         for (col_count, col) in enumerate(row):
@@ -241,21 +241,32 @@ def aStarSearch(problem, heuristic=nullHeuristic):
     exploredNodes = [] #holds (state, cost)
 
     startState = problem.getStartState()
-    startNode = (startState, [], 0) #(state, action, cost)
+    # /*=====Start Change Task 3=====*/
+    startNode = (startState, [], 0, 0) #(state, action, cost, depth)
+    maxFringeSize = 1 # currently only the start state
+    maxDepth = 0 # the current depth is 0
+    numberOfNodesExpanded = 1 # only the root node
+    # /*=====End Change Task 3=====*/
 
     frontier.push(startNode, 0)
 
     while not frontier.isEmpty():
 
         #begin exploring first (lowest-combined (cost+heuristic) ) node on frontier
-        currentState, actions, currentCost = frontier.pop()
+
+        # /*=====Start Change Task 3=====*/
+        currentState, actions, currentCost, currentDepth = frontier.pop()
+
+        # /*=====End Change Task 3=====*/
 
         #put popped node into explored list
         currentNode = (currentState, currentCost)
         exploredNodes.append((currentState, currentCost))
 
         if problem.isGoalState(currentState):
-            return actions
+            # /*=====Start Change Task 3=====*/
+            return (actions,maxFringeSize,maxDepth,numberOfNodesExpanded)
+            # /*=====End Change Task 3=====*/
 
         else:
             #list of (successor, action, stepCost)
@@ -265,8 +276,10 @@ def aStarSearch(problem, heuristic=nullHeuristic):
             for succState, succAction, succCost in successors:
                 newAction = actions + [succAction]
                 newCost = problem.getCostOfActions(newAction)
-                newNode = (succState, newAction, newCost)
-
+                # /*=====Start Change Task 3=====*/
+                newDepth = currentDepth + 1
+                newNode = (succState, newAction, newCost, newDepth)
+                # /*=====End Change Task 3=====*/
                 #check if this successor has been explored
                 already_explored = False
                 for explored in exploredNodes:
@@ -280,8 +293,12 @@ def aStarSearch(problem, heuristic=nullHeuristic):
                 if not already_explored:
                     frontier.push(newNode, newCost + heuristic(succState, problem))
                     exploredNodes.append((succState, newCost))
-
-    return actions
+                    maxFringeSize = max(maxFringeSize,len(frontier))
+                    numberOfNodesExpanded += 1
+                    maxDepth = max(maxDepth,newDepth)
+        # /*=====Start Change Task 3=====*/
+    return (actions,maxFringeSize,maxDepth,numberOfNodesExpanded)
+    # /*=====End Change Task 3=====*/
 
 
 # Abbreviations
