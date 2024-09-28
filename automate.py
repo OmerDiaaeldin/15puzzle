@@ -28,7 +28,8 @@ def automate_heuristics_tests(size=100):
 
     permutaion = 0
     while permutaion < size:
-        puzzle = createRandomFifteenPuzzle(20)
+        print(permutaion)
+        puzzle = createRandomFifteenPuzzle(25)
         thisPuzzleIsSolvable = puzzle.isPossible()
         if(not thisPuzzleIsSolvable):
             nonSolvableStates += 1
@@ -58,18 +59,18 @@ def automate_heuristics_tests(size=100):
         summary.append(statistic)
         print(f"{heuristics[h_index].__name__}: ")
         print(statistic)
-    nodes_list = [s['average tree depth'] for s in summary]
+    depth_list = [s['average tree depth'] for s in summary]
     fringe_size_list = [s['average maximum fringe size'] for s in summary]
-    depth_list = [s['average time'] for s in summary]
-    time_list = [s['average nodes used'] for s in summary]
+    time_list = [s['average time'] for s in summary]
+    nodes_list = [s['average nodes used'] for s in summary]
     alg_names = [alg.__name__ for alg in heuristics]
 
     df = pd.DataFrame({
         "algorithm": alg_names,
         "average maximum fringe size": fringe_size_list,
-        "average tree depth": nodes_list,
-        "average time": depth_list,
-        "average nodes used": time_list
+        "average tree depth": depth_list,
+        "average time": time_list,
+        "average nodes used": nodes_list
     })
     df.set_index("algorithm")
     print(df)
@@ -78,7 +79,7 @@ def automate_heuristics_tests(size=100):
     best_h = heuristics[nodes_list.index(min(nodes_list))]
     print(f"The best heuristic found based on the number of generated nodes is: {best_h.__name__}")
 
-def automate_uninformed_search_with_a_star(size=100, heuristic=h4):
+def automate_uninformed_search_with_a_star(size=1, heuristic=h3):
     """
      This is a function that generates a list of random fifteenpuzzles of length size and solves
       them using dfs, bfs, ucs, and A* with the passed heuristic while keeping track of the average max
@@ -104,7 +105,7 @@ def automate_uninformed_search_with_a_star(size=100, heuristic=h4):
         # if(permutaion%100==0):
         #     print(f"permutaion: {permutaion}")
         print(permutaion)
-        puzzle = createRandomFifteenPuzzle(5)
+        puzzle = createRandomFifteenPuzzle(2)
         thisPuzzleIsSolvable = puzzle.isPossible()
         if (not thisPuzzleIsSolvable):
             nonSolvableStates += 1
@@ -132,25 +133,26 @@ def automate_uninformed_search_with_a_star(size=100, heuristic=h4):
         summary.append(statistic)
         print(f"{searchAlgorithms[h_index].__name__}: ")
         print(statistic)
-    nodes_list = [s['average tree depth'] for s in summary]
+    depth_list = [s['average tree depth'] for s in summary]
     fringe_size_list = [s['average maximum fringe size'] for s in summary]
-    depth_list = [s['average time'] for s in summary]
-    time_list = [s['average nodes used'] for s in summary]
+    time_list = [s['average time'] for s in summary]
+    nodes_list = [s['average nodes used'] for s in summary]
     alg_names = [alg.__name__ for alg in searchAlgorithms]
 
     df = pd.DataFrame({
         "algorithm": alg_names,
         "average maximum fringe size": fringe_size_list,
-        "average tree depth": nodes_list,
-        "average time": depth_list,
-        "average nodes used": time_list
+        "average tree depth": depth_list,
+        "average time": time_list,
+        "average nodes used": nodes_list
     })
     df.set_index("algorithm")
     df.to_csv("./dfsAndTheRest.csv")
     print(df)
+    print(nodes_list)
     best_h = searchAlgorithms[nodes_list.index(min(nodes_list))]
     print(f"The best heuristic found based on the number of generated nodes is: {best_h.__name__}")
 
 
 # automate_heuristics_tests(size=100)
-automate_uninformed_search_with_a_star()
+automate_uninformed_search_with_a_star(5)

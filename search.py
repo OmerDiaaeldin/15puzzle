@@ -70,7 +70,7 @@ def tinyMazeSearch(problem):
     w = Directions.WEST
     return  [s, s, w, s, w, w, s, w]
 
-def depthFirstSearch(problem,max_depth=10):
+def depthFirstSearch(problem,max_depth=1000):
     """Search the deepest nodes in the search tree first."""
 
     #states to be explored (LIFO). holds nodes in form (state, action)
@@ -129,7 +129,7 @@ def depthFirstSearch(problem,max_depth=10):
     return (actions, maxFringeSize, maxDepth, numberOfNodesExpanded)
     # /*=====End Change Task 4=====*/
 
-def breadthFirstSearch(problem,max_depth=10):
+def breadthFirstSearch(problem,max_depth=1000):
     """Search the shallowest nodes in the search tree first."""
 
     #to be explored (FIFO)
@@ -182,7 +182,7 @@ def breadthFirstSearch(problem,max_depth=10):
     return (actions, maxFringeSize, maxDepth, numberOfNodesExpanded)
     # /*=====End Change Task 4=====*/
 
-def uniformCostSearch(problem, max_depth=10):
+def uniformCostSearch(problem, max_depth=1000):
     """Search the node of least total cost first."""
 
     #to be explored (FIFO): holds (item, cost)
@@ -272,8 +272,12 @@ def manhattanHeuristic(state, problem=None):
     for (row_count, row) in enumerate(state.cells):
         for (col_count, col) in enumerate(row):
             # get the final position of this value
+            if(col == 15):
+                continue
             eventual_row, eventual_col = util.getFinalPosition(col)
             total_distance += util.manhattanDistance((eventual_row, eventual_col), (row_count, col_count))
+    # print(state)
+    # print(total_distance)
     return total_distance
 def tilesOutOfRowAndColHeuristic(state, problem=None):
     total_estimated_cost = 0
