@@ -274,7 +274,7 @@ if __name__ == '__main__':
     print('A* found a path of %d moves: %s' % (len(path), str(path)))
     curr = puzzle
     i = 1
-    for a in path:
+    for a in path[0]:
         curr = curr.result(a)
         print('After %d move%s: %s' % (i, ("", "s")[i>1], a))
         print(curr)
