@@ -266,7 +266,7 @@ if __name__ == '__main__':
     print(puzzle)
 
     problem = FifteenPuzzleSearchProblem(puzzle)
-    heuristic = search.misplacedTilesHeuristic
+    heuristic = search.tilesOutOfRowAndColHeuristic
     path= search.aStarSearch(problem, heuristic)[0]
     """
     path = search.breadthFirstSearch(problem)
