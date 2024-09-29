@@ -266,15 +266,15 @@ if __name__ == '__main__':
     print(puzzle)
 
     problem = FifteenPuzzleSearchProblem(puzzle)
-    heuristic = search.h4
-    path= search.aStarSearch(problem, heuristic)
+    heuristic = search.misplacedTilesHeuristic
+    path= search.aStarSearch(problem, heuristic)[0]
     """
     path = search.breadthFirstSearch(problem)
     """   
     print('A* found a path of %d moves: %s' % (len(path), str(path)))
     curr = puzzle
     i = 1
-    for a in path[0]:
+    for a in path:
         curr = curr.result(a)
         print('After %d move%s: %s' % (i, ("", "s")[i>1], a))
         print(curr)
