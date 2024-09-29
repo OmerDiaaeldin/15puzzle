@@ -1,0 +1,5 @@
+,algorithm,average maximum fringe size,average tree depth,average time,average nodes used
+0,misplacedTilesHeuristic,90.759,9.498,0.0543959676,173.785
+1,euclideanHeuristic,42.229,9.498,0.0054059068000000005,79.212
+2,manhattanHeuristic,26.572,9.498,0.0017401125,48.287
+3,tilesOutOfRowAndColHeuristic,35.333,9.498,0.0049712116999999995,67.354
